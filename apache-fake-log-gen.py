@@ -75,7 +75,9 @@ ualist = [faker.firefox, faker.chrome, faker.safari, faker.internet_explorer, fa
 
 flag = True
 while (flag):
-	increment = datetime.timedelta(seconds=random.randint(30,300))
+        elapsed_us = random.randint(1 * 1000,1000 * 1000) # 1 ms to 1 sec
+        seconds=random.randint(30,300)
+	increment = datetime.timedelta(seconds=seconds)
 	otime += increment
 
 	ip = faker.ipv4()
@@ -91,7 +93,7 @@ while (flag):
 	byt = int(random.gauss(5000,50))
 	referer = faker.uri()
 	useragent = numpy.random.choice(ualist,p=[0.5,0.3,0.1,0.05,0.05] )()
-	f.write('%s - - [%s %s] "%s %s HTTP/1.0" %s %s "%s" "%s"\n' % (ip,dt,tz,vrb,uri,resp,byt,referer,useragent))
+	f.write('%s - - [%s %s] %s "%s %s HTTP/1.0" %s %s "%s" "%s"\n' % (ip,dt,tz,elapsed_us,vrb,uri,resp,byt,referer,useragent))
 
 	log_lines = log_lines - 1
 	flag = False if log_lines == 0 else True
